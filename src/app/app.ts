@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from './components/footer/footer';
 import { Header } from './components/header/header';
+import { MatDialogModule } from '@angular/material/dialog'; // <-- import here
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, MatDialogModule], // <-- add here
   template: `
     <app-header />
     <main class="main-content">
@@ -14,7 +15,7 @@ import { Header } from './components/header/header';
     </main>
     <app-footer />
   `,
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
 })
 export class App {
   title = 'Online Store';
