@@ -1,0 +1,92 @@
+<div class="dashboard">
+  <!-- HEADER -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>Admin Dashboard</h1>
+
+      <div class="header-actions">
+        <button class="btn-add" (click)="openAddForm()">+ Add Product</button>
+
+        <button class="btn-logout" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PRODUCTS -->
+  <div class="products-container">
+    <div class="products-header">
+      <h2>Products</h2>
+      <span class="product-count"> {{ products.length }} total </span>
+    </div>
+
+    <!-- TABLE VIEW -->
+    <div class="products-table" *ngIf="paginatedProducts.length > 0; else noProducts">
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let product of paginatedProducts">
+            <td>
+              <img class="table-image" [src]="product?.imageUrl?.[0]" [alt]="product.title" />
+            </td>
+
+            <td>{{ product.title }}</td>
+
+            <td>KES {{ product.price | number: '1.2-2' }}</td>
+
+            <td class="action-buttons">
+              <button class="btn-action btn-view" (click)="viewProduct(product)">View</button>
+
+              <button class="btn-action btn-edit" (click)="openEditForm(product)">Edit</button>
+
+              <button class="btn-action btn-delete" (click)="onDelete(product.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" *ngIf="products.length > itemsPerPage">
+      <button
+        class="pagination-btn"
+        (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        ‹
+      </button>
+
+      <button
+        class="pagination-number"
+        *ngFor="let page of pageNumbers"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        class="pagination-btn"
+        (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+      >
+        ›
+      </button>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <ng-template #noProducts>
+    <div class="no-products">
+      <h3>No products yet</h3>
+      <p>Click <strong>Add Product</strong> to get started</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,30 @@
+/* Reset any default margins/padding on the host */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+/* Create a fixed header */
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Add padding to main content to account for fixed header */
+.main-content {
+  min-height: calc(100vh - 60px - 80px); /* Adjust 60px/80px to your header/footer heights */
+  padding-top: 60px; /* Match your header height */
+  padding-bottom: 80px; /* Match your footer height */
+}
+
+/* Fixed footer at bottom */
+app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
