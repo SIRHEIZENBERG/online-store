@@ -10,6 +10,8 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from '../../../Services/toast.service';
 import { SlugUtil } from '../../../utils/slug.util';
+import { MatDialog } from '@angular/material/dialog';
+import { AddProduct } from '../../modals/add-product/add-product';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,6 +46,7 @@ export class Dashboard implements OnInit {
     private router: Router,
     private http: HttpClient,
     private toast: ToastService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -72,108 +75,50 @@ export class Dashboard implements OnInit {
     }
   }
 
-  get pageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  openAddForm() {
-    this.showForm = true;
-    this.editMode = false;
-    this.resetForm();
-  }
-
   viewProduct(product: Product) {
     if (!product.id) return;
     const slug = SlugUtil.generateSlug(product.title, product.id);
     this.router.navigate(['/product', slug]);
   }
 
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  openAddForm() {
+    const dialogRef = this.dialog.open(AddProduct, {
+      minWidth: '100%',
+      minHeight: '100vh',
+      data: { editMode: false },
+      disableClose: false,
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Product was added/updated successfully
+        // No need to do anything, the service will handle updates
+      }
+    });
+  }
+
   openEditForm(product: Product) {
-    this.showForm = true;
-    this.editMode = true;
-    this.currentProductId = product.id || null;
-    this.product = { ...product };
-  }
+    const dialogRef = this.dialog.open(AddProduct, {
+      minWidth: '100%',
+      minHeight: '100vh',
+      data: {
+        product: product,
+        editMode: true,
+      },
+      disableClose: false,
+      panelClass: 'custom-dialog-container',
+    });
 
-  resetForm() {
-    this.product = {
-      title: '',
-      price: 0,
-      description: '',
-      imageUrl: [],
-    };
-    this.currentProductId = null;
-    this.uploadError = '';
-  }
-
-  closeForm() {
-    this.showForm = false;
-    this.resetForm();
-  }
-
-  async onImageUpload(event: any) {
-    const files: FileList = event.target.files;
-    if (!files || files.length === 0) return;
-
-    this.uploading = true;
-    this.uploadError = '';
-
-    try {
-      for (const file of Array.from(files)) {
-        if (!file.type.startsWith('image/')) {
-          throw new Error(`${file.name} is not an image file`);
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-          throw new Error(`${file.name} exceeds 5MB limit`);
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', environment.cloudinary.uploadPreset);
-
-        const uploadResponse = await firstValueFrom(
-          this.http.post<any>(
-            `https://api.cloudinary.com/v1_1/${environment.cloudinary.cloudName}/image/upload`,
-            formData,
-          ),
-        );
-
-        this.product.imageUrl = [...this.product.imageUrl, uploadResponse.secure_url];
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Product was updated successfully
       }
-    } catch (error: any) {
-      this.uploadError = error.message || 'Failed to upload images. Please try again.';
-      console.error('Upload error:', error);
-    } finally {
-      this.uploading = false;
-      event.target.value = '';
-    }
-  }
-
-  removeImage(index: number) {
-    this.product.imageUrl.splice(index, 1);
-  }
-
-  async onSubmit() {
-    if (!this.product.title || !this.product.imageUrl || this.product.price <= 0) {
-      this.toast.warning('Please fill all required fields');
-      return;
-    }
-
-    try {
-      if (this.editMode && this.currentProductId) {
-        await this.productService.updateProduct(this.currentProductId, this.product);
-        this.toast.success('Product updated successfully!');
-      } else {
-        await this.productService.addProduct(this.product);
-        this.toast.success('Product added successfully!');
-      }
-
-      this.closeForm();
-    } catch (error) {
-      console.error('Error saving product:', error);
-      this.toast.error('Failed to save product. Please try again.');
-    }
+    });
   }
 
   async onDelete(id: string | undefined) {
