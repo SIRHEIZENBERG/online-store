@@ -35,9 +35,10 @@
             <div class="images-scroll-container" #scrollContainer (scroll)="onScroll($event)">
               <div *ngFor="let url of product.imageUrl; let i = index" class="image-wrapper">
                 <img
-                  [src]="url"
+                  [src]="url || 'assets/not-found.png'"
                   [alt]="product.title + ' image ' + (i + 1)"
                   class="product-image"
+                  (error)="onImageError($event)"
                 />
               </div>
             </div>

@@ -57,7 +57,11 @@
           <tr *ngFor="let product of paginatedProducts">
             <td>
               <div class="product-image">
-                <img [src]="product.imageUrl[0]" [alt]="product?.title" />
+                <img
+                  [src]="product?.imageUrl?.[0] || 'assets/not-found.png'"
+                  [alt]="product?.title"
+                  (error)="onImageError($event)"
+                />
               </div>
             </td>
             <td>
@@ -120,7 +124,11 @@
     <div class="products-cards" *ngIf="paginatedProducts.length > 0">
       <div class="product-card" *ngFor="let product of paginatedProducts">
         <div class="card-image">
-          <img [src]="product.imageUrl[0]" [alt]="product?.title" />
+          <img
+            [src]="product?.imageUrl?.[0] || 'assets/not-found.png'"
+            [alt]="product?.title"
+            (error)="onImageError($event)"
+          />
         </div>
         <div class="card-content">
           <h3 class="card-title">{{ product.title }}</h3>

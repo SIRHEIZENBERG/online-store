@@ -44,7 +44,6 @@ export class Dashboard implements OnInit {
     private productService: ProductService,
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient,
     private toast: ToastService,
     private dialog: MatDialog,
   ) {}
@@ -52,6 +51,14 @@ export class Dashboard implements OnInit {
   ngOnInit() {
     this.loadProducts();
     this.toast.success('Login successful!');
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+
+    if (!img.src.includes('not-found.png')) {
+      img.src = 'assets/not-found.png';
+    }
   }
 
   loadProducts() {

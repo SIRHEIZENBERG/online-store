@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('../app/components/admin/login/login').then((m) => m.Login),
   },
   {
+    path: 'solutions',
+    loadComponent: () => import('../app/components/solutions/solutions').then((m) => m.Solutions),
+    canActivate: [authGuard],
+  },
+  {
     path: 'admin',
     loadComponent: () =>
       import('../app/components/admin/dashboard/dashboard').then((m) => m.Dashboard),
@@ -27,6 +32,7 @@ export const routes: Routes = [
     loadComponent: () => import('../app/components/about-us/about-us').then((m) => m.AboutUs),
     canActivate: [authGuard],
   },
+
   {
     path: '**',
     redirectTo: '',

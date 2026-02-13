@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Retail Solutions</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+        color: #ffffff;
+        padding: 40px 20px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Header Section */
+      .header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .header h1 {
+        font-size: 3em;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header p {
+        font-size: 1.3em;
+        color: #b8c5d6;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .value-points {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+      }
+
+      .value-point {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.1em;
+        color: #e0e7ee;
+      }
+
+      .value-point::before {
+        content: '✓';
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      /* Package Cards */
+      .packages {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+      }
+
+      .package-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 40px 30px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .package-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .package-card:hover::before {
+        opacity: 1;
+      }
+
+      /* ADVANCED PACKAGE - HERO TREATMENT */
+      .package-card.recommended {
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(102, 126, 234, 0.4);
+        transform: scale(1.05);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+      }
+
+      .package-card.recommended::before {
+        opacity: 1;
+        height: 5px;
+      }
+
+      .badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .package-header h2 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+
+      .package-card.recommended .package-header h2 {
+        font-size: 2em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .package-tagline {
+        color: #b8c5d6;
+        font-size: 1.1em;
+        margin-bottom: 30px;
+        font-style: italic;
+      }
+
+      .package-card.recommended .package-tagline {
+        color: #d4ddea;
+        font-weight: 500;
+      }
+
+      .price {
+        font-size: 3em;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+
+      .package-card.recommended .price {
+        font-size: 3.5em;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .price-note {
+        color: #8a99af;
+        font-size: 0.95em;
+        margin-bottom: 30px;
+      }
+
+      /* PRO PACKAGE - MAJESTIC */
+      .package-card.pro {
+        background: linear-gradient(
+          135deg,
+          rgba(118, 75, 162, 0.1) 0%,
+          rgba(102, 126, 234, 0.1) 100%
+        );
+        border: 2px solid rgba(118, 75, 162, 0.3);
+      }
+
+      .package-card.pro .price {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Features List */
+      .features-list {
+        list-style: none;
+        margin-top: 30px;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 1.05em;
+        color: #d4ddea;
+      }
+
+      .feature-item:last-child {
+        border-bottom: none;
+      }
+
+      .package-card.recommended .feature-item {
+        color: #e8eef5;
+        font-weight: 500;
+      }
+
+      .feature-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-weight: bold;
+        font-size: 0.9em;
+      }
+
+      .feature-icon.check {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+      }
+
+      .feature-icon.cross {
+        background: red;
+        color: white;
+      }
+
+      .feature-label {
+        flex: 1;
+        line-height: 1.5;
+      }
+
+      .feature-highlight {
+        color: #38ef7d;
+        font-weight: 600;
+      }
+
+      /* Section Headers */
+      .section-title {
+        font-size: 26px;
+        color: #ffeb3b;
+        font-weight: 600;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+        .packages {
+          grid-template-columns: 1fr;
+        }
+
+        .package-card.recommended {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .header p {
+          font-size: 1.1em;
+        }
+
+        .value-points {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .price {
+          font-size: 2.5em;
+        }
+
+        .package-card.recommended .price {
+          font-size: 2.8em;
+        }
+      }
+
+      /* Subtle animations */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .package-card.recommended {
+        animation: float 6s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <div class="header">
+        <h1>Digital Retail Solutions</h1>
+        <p>
+          From inventory chaos to full retail control — choose the system that matches your growth
+          stage
+        </p>
+
+        <div class="value-points">
+          <div class="value-point">Real-time stock visibility</div>
+          <div class="value-point">Faster sales processing</div>
+          <div class="value-point">Clear profit tracking</div>
+        </div>
+      </div>
+
+      <!-- Package Cards -->
+      <div class="packages">
+        <!-- BASIC PACKAGE -->
+        <div class="package-card">
+          <div class="package-header">
+            <h2>Basic</h2>
+            <p class="package-tagline">Digital Foundation</p>
+          </div>
+
+          <div class="price">KES 60,000</div>
+          <p class="price-note">Ideal for transitioning from manual tracking</p>
+
+          <ul class="features-list">
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Product & SKU Management</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Stock Quantity Tracking</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Sales Recording (POS Entry)</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Customer Database</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Printable Receipts</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Daily Sales Summary</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Single Device Login</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon cross">✕</span>
+              <span class="feature-label">M-Pesa Integration</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon cross">✕</span>
+              <span class="feature-label">Multi-User Roles</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon cross">✕</span>
+              <span class="feature-label">Advanced Reporting</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- ADVANCED PACKAGE - RECOMMENDED -->
+        <div class="package-card recommended">
+          <span class="badge">⭐ Most Popular for Growing Businesses</span>
+
+          <div class="package-header">
+            <h2>Advanced</h2>
+            <p class="package-tagline">Retail Management System</p>
+          </div>
+
+          <div class="price">KES 120,000</div>
+          <p class="price-note">Perfect balance of power and value</p>
+
+          <p class="section-title">Everything in Basic +</p>
+
+          <ul class="features-list">
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">M-Pesa STK Push Integration</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Multi-User Accounts</span> (Admin, Cashier)</span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Real-time Inventory Auto-Deduction</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Low Stock Alerts</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Customer Purchase History</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Order Tracking (Pending, Paid, Delivered)</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Supplier Management</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Expense Tracking</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Profit & Margin Tracking</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Monthly & Weekly Reports</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Export to Excel</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Professional Dashboard Analytics</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- PRO PACKAGE - MAJESTIC -->
+        <div class="package-card pro">
+          <div class="package-header">
+            <h2>Pro</h2>
+            <p class="package-tagline">Enterprise Operations Platform</p>
+          </div>
+
+          <div class="price">KES 250,000</div>
+          <p class="price-note">Designed for scaling operations</p>
+
+          <p class="section-title">Everything in Advanced +</p>
+
+          <ul class="features-list">
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Custom Workflows</span> Tailored to Your
+                Business</span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">Multi-Branch Support</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Cloud Backup & Sync</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">SMS Notifications to Customers</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Automated Re-order Suggestions</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">API Integrations</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Custom Reporting Engine</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">White-labeled Mobile App</span></span
+              >
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label">Dedicated Support</span>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon check">✓</span>
+              <span class="feature-label"
+                ><span class="feature-highlight">On-site Training</span></span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

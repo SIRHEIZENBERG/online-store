@@ -170,6 +170,27 @@
   overflow: hidden;
 }
 
+/* Ambient color support for product info */
+.product-info {
+  /* Add smooth transition when ambient color loads */
+  transition: background 0.6s ease;
+  /* Subtle backdrop blur for better text readability on colored backgrounds */
+  backdrop-filter: blur(10px);
+}
+
+/* Ensure text remains readable on colored backgrounds */
+.product-title {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.product-description {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.product-price {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
 /* Product Footer */
 .product-footer {
   display: flex;

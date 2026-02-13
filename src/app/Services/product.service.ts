@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   docData,
+  writeBatch, // Add this import
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Product } from '../Models/product.model';
@@ -43,6 +44,25 @@ export class ProductService {
         ...product,
         createdAt: new Date(),
       });
+    });
+  }
+
+  // ⭐ NEW: Batch add multiple products
+  async batchAddProducts(products: Omit<Product, 'id'>[]): Promise<void> {
+    return runInInjectionContext(this.injector, async () => {
+      const batch = writeBatch(this.firestore);
+      const productsCollection = collection(this.firestore, 'products');
+
+      products.forEach((product) => {
+        const newDocRef = doc(productsCollection); // Auto-generate ID
+        batch.set(newDocRef, {
+          ...product,
+          createdAt: new Date(),
+        });
+      });
+
+      await batch.commit();
+      console.log('✅ Batch upload complete!');
     });
   }
 

@@ -8,17 +8,29 @@
   <!-- Products Grid -->
   <div class="products-section" *ngIf="!loading">
     <!-- Products Grid -->
+
+    <app-product-card-shimmer *ngIf="loading"></app-product-card-shimmer>
     <div class="products-grid" *ngIf="products.length > 0">
-      <!-- Replace the .product-card div with this -->
       <div class="product-card" *ngFor="let product of products" (click)="viewProduct(product)">
         <div class="product-image-container">
-          <img [src]="product.imageUrl[0]" [alt]="product.title" class="product-image" />
-          <div class="product-badge">New</div>
+          <img
+            [src]="
+              product.imageUrl && product.imageUrl[0] ? product.imageUrl[0] : 'assets/not-found.png'
+            "
+            [alt]="product.title"
+            class="product-image"
+            (error)="$event.target.src = 'assets/not-found.png'"
+          />
+          <div class="product-badge" *ngIf="isNewProduct(product)">New</div>
         </div>
 
-        <div class="product-info">
+        <!-- Product info with ambient color background -->
+        <div
+          class="product-info"
+          [style.background]="product.ambientColor || 'rgba(240, 240, 240, 0.15)'"
+        >
           <h3 class="product-title">{{ product.title }}</h3>
-          <p class="product-description">{{ product.description }}</p>
+          <!-- <p class="product-description">{{ product.description }}</p> -->
 
           <div class="product-footer">
             <div class="product-price">

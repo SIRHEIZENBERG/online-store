@@ -84,6 +84,14 @@ export class ProductDetail implements OnInit {
     }, 100);
   }
 
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+
+    if (!img.src.includes('not-found.png')) {
+      img.src = 'assets/not-found.png';
+    }
+  }
+
   ngOnDestroy() {
     if (this.scrollTimeout) {
       clearTimeout(this.scrollTimeout);
